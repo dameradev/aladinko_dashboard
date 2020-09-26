@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
+import { respondTo } from "../../utils/respondTo";
+
 const loading = keyframes`
   from {
     background-position: 0 0;
@@ -78,12 +80,26 @@ const Form = styled.form`
     width: 30%;
     margin-right: 1rem;
     display: inline-block;
+    ${respondTo.tabletMini` 
+      width: 100%;
+      
+    `}
     &__wrapper {
-      display: block;
+      display: flex;
+      align-items: center;
+      ${respondTo.tabletMini` 
+      flex-direction: column
+      
+    `}
     }
   }
   .remove-carpet {
     display: inline-block;
+    margin-bottom: 2rem;
+    ${respondTo.tabletMini` 
+      align-self: flex-start;
+      
+    `}
   }
 `;
 

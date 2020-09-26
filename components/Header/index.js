@@ -8,8 +8,9 @@ const HeaderStyles = styled.header`
   border-bottom: 2px solid ${(props) => props.theme.blue};
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.08);
   height: 70px;
+  width: 100%;
   .header {
-    width: 1000px;
+    width: 80%;
     height: inherit;
     margin: 0 auto;
     display: flex;
