@@ -16,7 +16,7 @@ class Nav extends Component {
     return (
       <Navigation>
         <Link href="/">
-          <a>Home</a>
+          <a>Novo Naročilo</a>
         </Link>
         <Link href="/carpets">
           <a>Preproge</a>
