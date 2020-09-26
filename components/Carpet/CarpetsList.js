@@ -34,6 +34,7 @@ const ALL_CARPETS = gql`
       status
       phoneNumber
       address
+      pickupTime
       carpets {
         measure
         pricePerMeter
@@ -55,6 +56,12 @@ const CarpetCard = styled.article`
 
   .Ordered {
     color: blue;
+  }
+  .phone {
+    a {
+      color: blue;
+      padding-left: 1rem;
+    }
   }
 `;
 
@@ -87,6 +94,7 @@ const CarpetsList = () => {
                 date_delivery,
                 phoneNumber,
                 status,
+                pickupTime,
                 carpets,
                 totalPrice,
               }) => {
@@ -98,11 +106,17 @@ const CarpetsList = () => {
                         {customer}
                       </h3>
                     }
-                    <h4>
-                      <span className="grey">Tel št:</span> {phoneNumber}
+                    <h4 className="phone">
+                      <span className="grey">Tel št:</span>
+
+                      <a href={`tel:+386${phoneNumber}`}>+386{phoneNumber}</a>
                     </h4>
                     <h4>
                       <span className="grey">Naslov:</span> {address}
+                    </h4>
+
+                    <h4>
+                      <span className="grey">Čas prevzema:</span> {pickupTime}
                     </h4>
 
                     <p>
@@ -127,10 +141,12 @@ const CarpetsList = () => {
                       </span>
                       <select
                         onChange={
-                          (e) =>
+                          (e) => {
                             changeStatus({
                               variables: { id, status: e.target.value },
-                            })
+                            });
+                            document.location.reload();
+                          }
                           // console.log()
                         }
                       >

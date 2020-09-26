@@ -13,6 +13,7 @@ const CREATE_CARPET_MUTATION = gql`
     $address: String
     $phoneNumber: String
     $carpets: [carpetDetailsCreateInput]!
+    $pickupTime: String
   ) {
     createCarpet(
       customer: $customer
@@ -20,6 +21,7 @@ const CREATE_CARPET_MUTATION = gql`
       phoneNumber: $phoneNumber
       address: $address
       carpets: $carpets
+      pickupTime: $pickupTime
     ) {
       id
     }
@@ -28,12 +30,13 @@ const CREATE_CARPET_MUTATION = gql`
 
 class CreateCarpet extends Component {
   state = {
-    customer: "fadsfads",
+    customer: "",
     images: [],
-    phoneNumber: "132131",
-    address: "fdafas",
-    numberOfCarpets: 1,
-    carpets: [{ measure: "", pricePerMeter: "" }],
+    phoneNumber: "",
+    address: "",
+    numberOfCarpets: 0,
+    carpets: [],
+    pickupTime: "",
   };
   handleChange = (e) => {
     const { name, type, value } = e.target;
@@ -186,46 +189,64 @@ class CreateCarpet extends Component {
                   onChange={this.handleChange}
                 />
               </label>
+              <label htmlFor="pickupTime">
+                Čas prevzema
+                <input
+                  type="text"
+                  name="pickupTime"
+                  id="pickupTime"
+                  placeholder="Čas prevzema"
+                  required
+                  value={this.state.pickupTime}
+                  onChange={this.handleChange}
+                />
+              </label>
 
               <button onClick={() => this.addArrayElement()}>+</button>
-              {carpets.map((carpet, index) => (
-                <div className="carpet-details__wrapper">
-                  <div className="carpet-details">
-                    <label htmlFor="measure">
-                      Meritev
-                      <input
-                        type="number"
-                        name="measure"
-                        id="measure"
-                        placeholder="Meritev"
-                        required
-                        value={carpet.measure}
-                        onChange={(e) => this.handleCarpetValueChange(e, index)}
-                      />
-                    </label>
-                  </div>
-                  <div className="carpet-details">
-                    <label htmlFor="pricePerMeter">
-                      Cena na m2
-                      <input
-                        type="number"
-                        name="pricePerMeter"
-                        id="pricePerMeter"
-                        placeholder="Cena na m2"
-                        required
-                        value={carpet.pricePerMeter}
-                        onChange={(e) => this.handleCarpetValueChange(e, index)}
-                      />
-                    </label>
-                  </div>
-                  <button
-                    className="remove-carpet"
-                    onClick={() => this.removeArrayElement()}
-                  >
-                    -
-                  </button>
-                </div>
-              ))}
+              {carpets.length
+                ? carpets.map((carpet, index) => (
+                    <div className="carpet-details__wrapper">
+                      <div className="carpet-details">
+                        <label htmlFor="measure">
+                          Meritev
+                          <input
+                            type="number"
+                            name="measure"
+                            id="measure"
+                            placeholder="Meritev"
+                            required
+                            value={carpet.measure}
+                            onChange={(e) =>
+                              this.handleCarpetValueChange(e, index)
+                            }
+                          />
+                        </label>
+                      </div>
+                      <div className="carpet-details">
+                        <label htmlFor="pricePerMeter">
+                          Cena na m2
+                          <input
+                            type="number"
+                            name="pricePerMeter"
+                            id="pricePerMeter"
+                            placeholder="Cena na m2"
+                            required
+                            value={carpet.pricePerMeter}
+                            onChange={(e) =>
+                              this.handleCarpetValueChange(e, index)
+                            }
+                          />
+                        </label>
+                      </div>
+                      <button
+                        className="remove-carpet"
+                        onClick={() => this.removeArrayElement()}
+                      >
+                        -
+                      </button>
+                    </div>
+                  ))
+                : null}
 
               <button type="submit">Submit</button>
             </fieldset>
