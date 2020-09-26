@@ -24,11 +24,11 @@ class Header extends Component {
     return (
       <HeaderStyles>
         <div className="header">
-          <Link href="/">
+          {/* <Link href="/">
             <a>
               <Logo />
             </a>
-          </Link>
+          </Link> */}
 
           <Nav />
         </div>
