@@ -4,10 +4,13 @@ import gql from "graphql-tag";
 import Router from "next/router";
 import Form from "../styles/Form";
 
+import { SINGLE_CARPET_QUERY } from "./SingleCarpet";
+
 // import ErrorMessage from "./ErrorMessage";
 
 const CREATE_CARPET_MUTATION = gql`
   mutation CREATE_CARPET_MUTATION(
+    $id: String
     $customer: String!
     $images: [String]!
     $address: String
@@ -16,6 +19,7 @@ const CREATE_CARPET_MUTATION = gql`
     $pickupTime: String
   ) {
     createCarpet(
+      id: $id
       customer: $customer
       images: $images
       phoneNumber: $phoneNumber
@@ -30,6 +34,7 @@ const CREATE_CARPET_MUTATION = gql`
 
 class CreateCarpet extends Component {
   state = {
+    id: null,
     customer: "",
     images: [],
     phoneNumber: "",
@@ -38,6 +43,23 @@ class CreateCarpet extends Component {
     carpets: [],
     pickupTime: "",
   };
+
+  componentDidMount() {
+    const { carpet = {} } = this.props;
+
+    if (carpet.customer) {
+      carpet.carpets.forEach((carpet) => delete carpet["__typename"]);
+      this.setState({
+        id: carpet.id,
+        customer: carpet.customer,
+        images: carpet.images,
+        phoneNumber: `0${carpet.phoneNumber}`,
+        address: carpet.address,
+        pickupTime: carpet.pickupTime,
+        carpets: carpet.carpets,
+      });
+    }
+  }
   handleChange = (e) => {
     const { name, type, value } = e.target;
     // const parsedValue = type === "number" ? parseFloat(value) : value;
@@ -120,10 +142,14 @@ class CreateCarpet extends Component {
   };
   render() {
     const { carpets } = this.state;
-
     console.log(this.state);
+
     return (
-      <Mutation mutation={CREATE_CARPET_MUTATION} variables={this.state}>
+      <Mutation
+        mutation={CREATE_CARPET_MUTATION}
+        variables={this.state}
+        refetchQueries={this.state.id && SINGLE_CARPET_QUERY}
+      >
         {(createCarpet, { loading, error }) => (
           <Form
             data-test="createCarpetForm"
@@ -136,23 +162,24 @@ class CreateCarpet extends Component {
           >
             {/* <ErrorMessage error={error} /> */}
             <fieldset disabled={loading} aria-busy={loading}>
-              {/* <label htmlFor="file">
-                images
-                <input
-                  type="file"
-                  name="file"
-                  id="file"
-                  placeholder="Upload an images"
-                  required
-                  multiple
-                  //value={this.state.images}
-                  onChange={this.uploadFile}
-                />
-                {this.state.images &&
-                  this.state.images.map((image) => (
-                    <img src={image} alt="Upload images" width="200" />
-                  ))}
-              </label> */}
+              {this.props.image && (
+                <label htmlFor="file">
+                  images
+                  <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    placeholder="Upload an images"
+                    multiple
+                    //value={this.state.images}
+                    onChange={this.uploadFile}
+                  />
+                  {this.state.images &&
+                    this.state.images.map((image) => (
+                      <img src={image} alt="Upload images" width="200" />
+                    ))}
+                </label>
+              )}
               <label htmlFor="customer">
                 Stranka
                 <input

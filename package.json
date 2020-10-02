@@ -33,6 +33,7 @@
     "react": "^16.13.1",
     "react-adopt": "^0.6.0",
     "react-apollo": "latest",
+    "react-awesome-slider": "^4.1.0",
     "react-dom": "^16.13.1",
     "react-moment": "^0.9.7",
     "react-stripe-checkout": "^2.6.3",

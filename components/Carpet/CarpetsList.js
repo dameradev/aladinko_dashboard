@@ -1,10 +1,11 @@
 import React from "react";
-
-// import { useMutation } from "apollo-boost";
+import Link from "next/link";
 import { Query, useMutation } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Moment from "react-moment";
+
+import { respondTo } from "../../utils/respondTo";
 // import { deleteCarpet } from "../../../backend/src/resolvers/Mutation";
 
 const DELETE_CARPET = gql`
@@ -49,11 +50,22 @@ const CarpetCard = styled.article`
   padding: 2rem;
   color: #2c2c2c;
   box-shadow: ${(props) => props.theme.bs};
+  ${respondTo.tabletMini` 
+    
+    box-shadow:none;
+    border-bottom: 1px solid black;
+    width: 100%;
+    
+  `}
 
   .grey {
     color: #828282;
   }
 
+  .blue {
+    color: blue;
+    padding-left: 2rem;
+  }
   .Ordered {
     color: blue;
   }
@@ -67,8 +79,12 @@ const CarpetCard = styled.article`
 
 const CarpetListStyled = styled.section`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
   grid-gap: 2rem;
+  ${respondTo.tabletMini` 
+      grid-gap:1rem;
+      width: 100%;
+  `}
 `;
 
 const STATUS_LIST = ["Ordered", "Processing", "Delivered"];
@@ -76,6 +92,9 @@ const STATUS_LIST = ["Ordered", "Processing", "Delivered"];
 const CarpetsList = () => {
   const [deleteCarpet] = useMutation(DELETE_CARPET);
   const [changeStatus] = useMutation(CHANGE_STATUS);
+  const onAddressClick = (address) => {
+    window.open("//" + "google.com/search?q=" + address, "_blank");
+  };
   return (
     <Query query={ALL_CARPETS}>
       {({ data, error, loading }) => {
@@ -103,7 +122,9 @@ const CarpetsList = () => {
                     {
                       <h3>
                         <span className="grey">Ime Stranke: </span>
-                        {customer}
+                        <Link href={{ pathname: "/carpets", query: { id } }}>
+                          <a className="blue">{customer}</a>
+                        </Link>
                       </h3>
                     }
                     <h4 className="phone">
@@ -111,8 +132,9 @@ const CarpetsList = () => {
 
                       <a href={`tel:+386${phoneNumber}`}>+386{phoneNumber}</a>
                     </h4>
-                    <h4>
-                      <span className="grey">Naslov:</span> {address}
+                    <h4 onClick={() => onAddressClick(address)}>
+                      <span className="grey">Naslov:</span>
+                      <span className="blue">{address}</span>
                     </h4>
 
                     <h4>

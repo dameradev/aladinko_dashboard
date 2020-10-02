@@ -6,6 +6,7 @@ import styled, {
 } from "styled-components";
 import Meta from "../Meta";
 import Header from "../Header";
+import { respondTo } from "../../utils/respondTo";
 
 const theme = {
   colorPrimary: "#2090c0",
@@ -25,8 +26,12 @@ const StyledPage = styled.div`
 
 const Inner = styled.div`
   max-width: ${(props) => props.theme.maxWidth};
-  margin: 0 auto;
-  padding: 2rem;
+
+  ${respondTo.tabletMini` 
+    
+      max-width: 100%;
+  `}/* margin: 0 auto; */
+  /* padding: 2rem; */
 `;
 
 const GlobalStyles = createGlobalStyle`
