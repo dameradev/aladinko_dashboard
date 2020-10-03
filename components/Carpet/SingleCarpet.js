@@ -82,11 +82,10 @@ const SingleCarpet = (props) => {
             <p>
               Čas prevzema: <span>{pickupTime}</span>
             </p>
-            {carpet && <CreateCarpet image carpet={carpet} />}
 
             <AutoplaySlider
               // animation="cubeAnimation"
-              className="bg-video"
+              // className={``}
               interval={10000}
               play={false}
               cancelOnInteraction={false}
@@ -96,6 +95,7 @@ const SingleCarpet = (props) => {
                   return <div data-src={image} />;
                 })}
             </AutoplaySlider>
+            {carpet && <CreateCarpet image carpet={carpet} />}
           </SingleCarpetStyled>
         );
       }}
